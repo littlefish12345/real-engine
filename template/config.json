@@ -1,0 +1,7 @@
+{
+	"engine_version": 0.1,
+	"compiler": "g++",
+	"compiler_flags": "-g -std=c++17",
+	"output_name": "output",
+	"source_files": ["main.cpp"]
+}
