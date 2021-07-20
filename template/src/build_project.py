@@ -13,6 +13,7 @@ if len(sys.argv) != 2:
 project_path = sys.argv[1]
 project_config_path = os.path.join(project_path, "config.json")
 project_build_path = os.path.join(project_path, "build")
+project_resources_path = os.path.join(project_path, "resources")
 
 if not (os.path.exists(project_config_path) and os.path.isfile(project_config_path)):
     print("Usage: python build_project.py <path_to_project>")
@@ -53,13 +54,13 @@ source_file_path_list = []
 for src in config["source_files"]:
     source_file_path_list.append(os.path.join(project_path, "src", src))
 
-ststic_lib_list = ['-lglad']
+ststic_lib_list = ["-lglad"]
 
 if sys.platform == 'win32':
-    dy_lib_list = ["./lib/glfw3.dll"]
+    dy_lib_list = ["./lib/glfw3.dll", "./lib/libassimp.dll"]
     extra_option = ""
 else:
-    dy_lib_list = ["./lib/libglfw.so.3"]
+    dy_lib_list = ["./lib/libglfw.so.3", "./lib/libassimp.so.4"]
     extra_option = " -ldl -Wl,-rpath=."
 
 final_command = config["compiler"] + " " + config["compiler_flags"] + " -I./include -L./lib " + " ".join(source_file_path_list) + " -o " + \
@@ -72,9 +73,13 @@ if p.returncode != 0:
     print('Build failure')
     exit(0)
 
+shutil.copytree(project_resources_path,os.path.join(project_build_path,'resources'))
+
 if sys.platform == 'win32':
     shutil.copy("./lib/glfw3.dll", os.path.join(project_build_path, "glfw3.dll"))
+    shutil.copy("./lib/libassimp.dll", os.path.join(project_build_path, "libassimp.dll"))
 else:
     shutil.copy("./lib/libglfw.so.3", os.path.join(project_build_path, "libglfw.so.3"))
+    shutil.copy("./lib/libassimp.so.4", os.path.join(project_build_path, "libassimp.so.4"))
     
 print('Build finish')

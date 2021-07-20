@@ -1,7 +1,8 @@
 *.o
-3.3.4.zip
+*.zip
 .wget-hsts
 .wgetrc
 glfw-3.3.4/
+assimp-5.0.1/
 project/
 real-engine/
